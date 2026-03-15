@@ -1,0 +1,37 @@
+# Konfigurasi GeoServer
+
+## Akses GeoServer
+- URL: http://localhost:8080/geoserver/web
+- Username: `admin`
+- Password: `geoserver`
+
+## Langkah Setup Layer dari PostGIS
+
+### 1. Tambah Store PostGIS
+1. Buka GeoServer Web UI
+2. Klik **Stores** → **Add new Store**
+3. Pilih **PostGIS**
+4. Isi konfigurasi:
+   - Host: `postgis`
+   - Port: `5432`
+   - Database: `gisdb`
+   - Username: `gisuser`
+   - Password: `gispassword`
+
+### 2. Publish Layer
+1. Klik **Layers** → **Add a new layer**
+2. Pilih store PostGIS yang sudah dibuat
+3. Pilih tabel `titik_penting` → **Publish**
+4. Set CRS ke `EPSG:4326`
+5. Klik **Compute from data** pada Bounding Box
+6. Save
+
+### 3. Test WMS/WFS
+- WMS: `http://localhost:8080/geoserver/ows?service=WMS&version=1.1.1&request=GetCapabilities`
+- WFS: `http://localhost:8080/geoserver/ows?service=WFS&version=1.0.0&request=GetCapabilities`
+
+## Struktur Direktori
+```
+data/geoserver/    ← data GeoServer (shapefiles, dll)
+data/postgis/      ← SQL inisialisasi database
+```
