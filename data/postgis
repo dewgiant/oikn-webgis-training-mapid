@@ -1,0 +1,26 @@
+-- Inisialisasi database GIS
+CREATE EXTENSION IF NOT EXISTS postgis;
+CREATE EXTENSION IF NOT EXISTS postgis_topology;
+
+-- Tabel contoh: lokasi titik
+CREATE TABLE IF NOT EXISTS titik_penting (
+    id SERIAL PRIMARY KEY,
+    nama VARCHAR(255),
+    kategori VARCHAR(100),
+    deskripsi TEXT,
+    geom GEOMETRY(Point, 4326)
+);
+
+-- Isi data sampel (Balikpapan, Kalimantan Timur)
+INSERT INTO titik_penting (nama, kategori, deskripsi, geom) VALUES
+    ('Bandara Sultan Aji Muhammad Sulaiman', 'Transportasi', 'Bandara internasional Balikpapan', ST_SetSRID(ST_MakePoint(116.8943, -1.2683), 4326)),
+    ('Kantor Gubernur Kalimantan Timur', 'Pemerintahan', 'Kantor gubernur Kaltim', ST_SetSRID(ST_MakePoint(117.1437, -0.5022), 4326)),
+    ('Pantai Melawai', 'Wisata', 'Pantai populer di Balikpapan', ST_SetSRID(ST_MakePoint(116.8317, -1.2784), 4326)),
+    ('Balikpapan Plaza', 'Komersial', 'Pusat perbelanjaan Balikpapan', ST_SetSRID(ST_MakePoint(116.8437, -1.2684), 4326)),
+    ('Pelabuhan Semayang', 'Transportasi', 'Pelabuhan utama Balikpapan', ST_SetSRID(ST_MakePoint(116.8218, -1.2557), 4326));
+
+-- Buat indeks spasial
+CREATE INDEX IF NOT EXISTS idx_titik_penting_geom ON titik_penting USING GIST (geom);
+
+-- Info
+SELECT 'Database GIS berhasil diinisialisasi!' AS status;
